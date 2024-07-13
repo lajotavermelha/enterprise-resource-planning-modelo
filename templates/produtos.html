@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP - Produtos</title>
-    <link rel="stylesheet" href="((url_for('static', filename='css/styles.css')))">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
 </head>
 <body>
     <h1>ERP - Produtos</h1>
-    <div>
+    <div id="product-form">
         <input type="text" id="product-name" placeholder="Nome do Produto">
         <input type="number" id="product-quantity" placeholder="Quantidade">
         <button onclick="addProduct()">Adicionar Produto</button>
     </div>
+    <div id="product-list"></div>
     <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
 </body>
 </html>

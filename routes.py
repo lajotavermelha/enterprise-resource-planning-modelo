@@ -1,43 +1,37 @@
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from main import app, db
 from models import Produto
 
-@app.route('/produtos', methods=['GET'])
-def get_produtos():
-    produtos = Produto.query.all()
-    return jsonify([{
-        'nome': produto.nome,
-        'quantidade': produto.quantidade
-    } for produto in produtos])
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-@app.route('/produtos', methods=['POST'])
-def add_produto():
-    data = request.get_json()
-    novo_produto = Produto(nome=data['nome'], quantidade=data['quantidade'])
-    db.session.add(novo_produto)
-    db.session.commit()
-    return jsonify({'message': 'Produto adicionado'}), 201
+@app.route('/produtos-page')
+def produtos_page():
+    return render_template('produtos.html')
 
-@app.route('/produtos/<int:id>', methods=['PUT'])
-def update_produto(id):
-    data = request.get_json()
+@app.route('/produtos', methods=['GET', 'POST'])
+def manage_produtos():
+    if request.method == 'GET':
+        produtos = Produto.query.all()
+        return jsonify([{'id': p.id, 'nome': p.nome, 'quantidade': p.quantidade} for p in produtos])
+    elif request.method == 'POST':
+        data = request.get_json()
+        novo_produto = Produto(nome=data['nome'], quantidade=data['quantidade'])
+        db.session.add(novo_produto)
+        db.session.commit()
+        return jsonify({'message': 'Produto adicionado'}), 201
+
+@app.route('/produtos/<int:id>', methods=['PUT', 'DELETE'])
+def update_delete_produto(id):
     produto = Produto.query.get_or_404(id)
-    produto.nome = data.get('nome', produto.nome)
-    produto.quantidade = data.get('quantidade', produto.quantidade)
-    db.session.commit()
-    return jsonify({'message': 'Produto atualizado'})
-
-@app.route('/produtos/<int:id>', methods=['DELETE'])
-def delete_produto(id):
-    produto = Produto.query.get_or_404(id)
-    db.session.delete(produto)
-    db.session.commit()
-    return jsonify({'message': 'Produto deletado'})
-
-@app.route('/produtos/<int:id>', methods=['GET'])
-def get_produto(id):
-    produto = Produto.query.get_or_404(id)
-    return jsonify({
-        'nome': produto.nome,
-        'quantidade': produto.quantidade
-    })
+    if request.method == 'PUT':
+        data = request.get_json()
+        produto.nome = data['nome']
+        produto.quantidade = data['quantidade']
+        db.session.commit()
+        return jsonify({'message': 'Produto atualizado'}), 200
+    elif request.method == 'DELETE':
+        db.session.delete(produto)
+        db.session.commit()
+        return jsonify({'message': 'Produto excluído'}), 200
