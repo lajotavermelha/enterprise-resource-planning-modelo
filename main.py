@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -8,7 +8,7 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def home():
-    return "ERP Home"
+    return render_template('index.html')
 
 from routes import *
 
