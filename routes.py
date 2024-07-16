@@ -14,10 +14,10 @@ def produtos_page():
 def manage_produtos():
     if request.method == 'GET':
         produtos = Produto.query.all()
-        return jsonify([{'id': p.id, 'nome': p.nome, 'quantidade': p.quantidade} for p in produtos])
+        return jsonify([{'id': p.id, 'nome': p.nome, 'quantidade': p.quantidade, 'valor': p.valor} for p in produtos])
     elif request.method == 'POST':
         data = request.get_json()
-        novo_produto = Produto(nome=data['nome'], quantidade=data['quantidade'])
+        novo_produto = Produto(nome=data['nome'], quantidade=data['quantidade'], valor=data['valor'])
         db.session.add(novo_produto)
         db.session.commit()
         return jsonify({'message': 'Produto adicionado'}), 201
@@ -29,6 +29,7 @@ def update_delete_produto(id):
         data = request.get_json()
         produto.nome = data['nome']
         produto.quantidade = data['quantidade']
+        produto.valor = data['valor']
         db.session.commit()
         return jsonify({'message': 'Produto atualizado'}), 200
     elif request.method == 'DELETE':

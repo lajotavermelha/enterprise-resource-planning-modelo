@@ -14,7 +14,7 @@ function fetchProducts() {
                 const productItem = document.createElement('div');
                 productItem.className = 'product-item';
                 productItem.innerHTML = `
-                    <span>${product.nome} (${product.quantidade})</span>
+                    <span>${product.nome} (${product.quantidade}) R$${product.valor}</span>
                     <div>
                         <button onclick="editProduct(${product.id})">Editar</button>
                         <button onclick="deleteProduct(${product.id})">Excluir</button>
@@ -29,33 +29,36 @@ function fetchProducts() {
 function addProduct() {
     const name = document.getElementById('product-name').value;
     const quantity = document.getElementById('product-quantity').value;
+    const value = document.getElementById('product-value').value
 
     fetch('/produtos', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ nome: name, quantidade: quantity })
+        body: JSON.stringify({ nome: name, quantidade: quantity, valor:value })
     })
     .then(response => response.json())
     .then(() => {
         document.getElementById('product-name').value = '';
         document.getElementById('product-quantity').value = '';
+        document.getElementById('product-value').value = '';
         fetchProducts();
     })
     .catch(error => console.error('Error adding product:', error));
 }
 
 function editProduct(id) {
-    const newName = prompt('Digite o novo nome do produto: ');
-    const newQuantity = prompt('Digite a nova quantidade do produto: ');
+    const newName = prompt('Digite o novo NOME do produto: ');
+    const newQuantity = prompt('Digite a nova QUANTIDADE do produto: ');
+    const newValue = prompt('Digite o novo VALOR do produto: ');
 
     fetch(`/produtos/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ nome: newName, quantidade: newQuantity })
+        body: JSON.stringify({ nome: newName, quantidade: newQuantity, valor: newValue })
     })
     .then(response => response.json())
     .then(() => fetchProducts())
