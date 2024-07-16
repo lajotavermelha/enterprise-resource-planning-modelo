@@ -1,11 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname === '/produtos-page'){
+    if (window.location.pathname === '/estoque'){
         fetchProducts();
     }
+
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname === '/recursoshumanos'){
+        fetchFuncionarios();
+    }
+
 });
 
 function fetchProducts() {
-    fetch('/produtos')
+    fetch('/api/estoque')
         .then(response => response.json())
         .then(data => {
             const productList = document.getElementById('product-list');
@@ -31,7 +39,7 @@ function addProduct() {
     const quantity = document.getElementById('product-quantity').value;
     const value = document.getElementById('product-value').value
 
-    fetch('/produtos', {
+    fetch('/api/estoque', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -53,7 +61,7 @@ function editProduct(id) {
     const newQuantity = prompt('Digite a nova QUANTIDADE do produto: ');
     const newValue = prompt('Digite o novo VALOR do produto: ');
 
-    fetch(`/produtos/${id}`, {
+    fetch(`/api/estoque/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -66,7 +74,7 @@ function editProduct(id) {
 }
 
 function deleteProduct(id) {
-    fetch(`/produtos/${id}`, {
+    fetch(`/api/estoque/${id}`, {
         method: 'DELETE'
     })
     .then(response => response.json())
@@ -75,7 +83,7 @@ function deleteProduct(id) {
 }
 
 function fetchFuncionarios() {
-    fetch('/recursoshumanos')
+    fetch('/api/recursoshumanos')
     .then( response => response.json())
     .then(data => {
         const funcionariosList = document.getElementById('funcionarios-list')
@@ -86,8 +94,8 @@ function fetchFuncionarios() {
             funcionariosItem.innerHTML = `
                 <span>${funcionario.nome} R$${funcionario.salario}</span>
                 <div>
-                    <button onclick="editProduct(${funcionario.id})">Editar</button>
-                    <button onclick="deleteProduct(${funcionario.id})">Excluir</button>
+                    <button onclick="editFuncionario(${funcionario.id})">Editar</button>
+                    <button onclick="deleteFuncionario(${funcionario.id})">Excluir</button>
                 </div>
             `
             funcionariosList.appendChild(funcionariosItem)
@@ -99,13 +107,14 @@ function addFuncionario() {
     const nome_funcionario = document.getElementById('nome-funcionario').value
     const salario_funcionario = document.getElementById('salario-funcionario').value
 
-    fetch('/recursoshumanos',  {
+    fetch('/api/recursoshumanos',  {
         method:'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({nome: nome_funcionario, salario: salario_funcionario})
     })
+    .then(response => response.json())
     .then(() => {
         document.getElementById('nome-funcionario').value = ''
         document.getElementById('salario-funcionario').value = ''
@@ -114,3 +123,30 @@ function addFuncionario() {
     .catch(error => console.error('Error adding product:', error));
 }
 
+function editFuncionario(id) {
+    const new_nome_funcionario = prompt('Digite o novo NOME do Funcionario: ')
+    const new_salario_funcionario = prompt('Digite o novo SALARIO do funcionario: ')
+
+    fetch(`/api/recursoshumanos/${id}`,  {
+        method:'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({nome: new_nome_funcionario, salario: new_salario_funcionario})
+    })
+    .then(response => response.json())
+    .then(() => fetchFuncionarios())
+    .catch(error => console.error('Error adding product:', error));
+}
+
+function deleteFuncionario(id) {
+    fetch(`/api/recursoshumanos/${id}`,  {
+        method:'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => response.json())
+    .then(() => fetchFuncionarios())
+    .catch(error => console.error('Error adding product:', error));
+}

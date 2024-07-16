@@ -7,14 +7,14 @@ from models import Produto, Funcionario
 def home():
     return render_template('index.html')
 
-@app.route('/produtos-page')
+@app.route('/estoque')
 def produtos_page():
     return render_template('produtos.html')
 @app.route('/recursoshumanos')
 def recursos_humanos():
     return render_template('recursoshumanos.html')
 
-@app.route('/produtos', methods=['GET', 'POST'])
+@app.route('/api/estoque', methods=['GET', 'POST'])
 def manage_produtos():
     if request.method == 'GET':
         produtos = Produto.query.all()
@@ -26,7 +26,7 @@ def manage_produtos():
         db.session.commit()
         return jsonify({'message': 'Produto adicionado'}), 201
 
-@app.route('/produtos/<int:id>', methods=['PUT', 'DELETE'])
+@app.route('/api/estoque/<int:id>', methods=['PUT', 'DELETE'])
 def update_delete_produto(id):
     produto = Produto.query.get_or_404(id)
     if request.method == 'PUT':
@@ -41,8 +41,8 @@ def update_delete_produto(id):
         db.session.commit()
         return jsonify({'message': 'Produto excluído'}), 200
     
-@app.route('/recursoshumanos', methods=['GET', 'POST'])
-def manage_funcionario():
+@app.route('/api/recursoshumanos', methods=['GET', 'POST'])
+def manage_funcionarios():
     if request.method == 'GET':
         funcionarios = Funcionario.query.all()
         return jsonify([{'id': f.id, 'nome': f.nome, 'salario': f.salario} for f in funcionarios])
@@ -53,16 +53,17 @@ def manage_funcionario():
         db.session.commit()
         return jsonify({'message': 'funcionario criado'}), 201
 
-@app.route('/recursoshumanos/<int:id>', methods=['PUT', 'DELETE'])
+@app.route('/api/recursoshumanos/<int:id>', methods=['PUT', 'DELETE'])
 def update_delete_funcionario(id):
+    funcionario = Funcionario.query.get_or_404(id)
     if request.method == 'PUT':
         data = request.get_json()
         funcionario.nome = data['nome']
         funcionario.salario = data['salario']
         db.session.commit()
-        return jsonify({'message': 'funcionario atualizado'}), 201
+        return jsonify({'message': 'funcionario atualizado'}), 200
     elif request.method == 'DELETE':
         db.session.delete(funcionario)
         db.session.commit()
-        return jsonify({'message': 'funcionario deletado'}), 201
+        return jsonify({'message': 'funcionario deletado'}), 200
             
