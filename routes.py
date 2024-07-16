@@ -1,6 +1,7 @@
 from flask import request, jsonify, render_template
 from main import app, db
-from models import Produto
+from models import Produto, Funcionario
+
 
 @app.route('/')
 def home():
@@ -9,6 +10,9 @@ def home():
 @app.route('/produtos-page')
 def produtos_page():
     return render_template('produtos.html')
+@app.route('/recursoshumanos')
+def recursos_humanos():
+    return render_template('recursoshumanos.html')
 
 @app.route('/produtos', methods=['GET', 'POST'])
 def manage_produtos():
@@ -36,3 +40,29 @@ def update_delete_produto(id):
         db.session.delete(produto)
         db.session.commit()
         return jsonify({'message': 'Produto excluído'}), 200
+    
+@app.route('/recursoshumanos', methods=['GET', 'POST'])
+def manage_funcionario():
+    if request.method == 'GET':
+        funcionarios = Funcionario.query.all()
+        return jsonify([{'id': f.id, 'nome': f.nome, 'salario': f.salario} for f in funcionarios])
+    elif request.method == 'POST':
+        data = request.get_json()
+        novo_funcionario = Funcionario(nome=data['nome'], salario=data['salario'])
+        db.session.add(novo_funcionario)
+        db.session.commit()
+        return jsonify({'message': 'funcionario criado'}), 201
+
+@app.route('/recursoshumanos/<int:id>', methods=['PUT', 'DELETE'])
+def update_delete_funcionario(id):
+    if request.method == 'PUT':
+        data = request.get_json()
+        funcionario.nome = data['nome']
+        funcionario.salario = data['salario']
+        db.session.commit()
+        return jsonify({'message': 'funcionario atualizado'}), 201
+    elif request.method == 'DELETE':
+        db.session.delete(funcionario)
+        db.session.commit()
+        return jsonify({'message': 'funcionario deletado'}), 201
+            

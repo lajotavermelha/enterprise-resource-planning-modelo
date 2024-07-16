@@ -73,3 +73,44 @@ function deleteProduct(id) {
     .then(() => fetchProducts())
     .catch(error => console.error('Error deleting product:', error));
 }
+
+function fetchFuncionarios() {
+    fetch('/recursoshumanos')
+    .then( response => response.json())
+    .then(data => {
+        const funcionariosList = document.getElementById('funcionarios-list')
+        funcionariosList.innerHTML = ''
+        data.forEach(funcionario => {
+            const funcionariosItem = document.createElement('div')
+            funcionariosItem.className = 'funcionario-item'
+            funcionariosItem.innerHTML = `
+                <span>${funcionario.nome} R$${funcionario.salario}</span>
+                <div>
+                    <button onclick="editProduct(${funcionario.id})">Editar</button>
+                    <button onclick="deleteProduct(${funcionario.id})">Excluir</button>
+                </div>
+            `
+            funcionariosList.appendChild(funcionariosItem)
+        })
+    })
+    .catch(error => console.error('Error fetching products:', error));
+}
+function addFuncionario() {
+    const nome_funcionario = document.getElementById('nome-funcionario').value
+    const salario_funcionario = document.getElementById('salario-funcionario').value
+
+    fetch('/recursoshumanos',  {
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({nome: nome_funcionario, salario: salario_funcionario})
+    })
+    .then(() => {
+        document.getElementById('nome-funcionario').value = ''
+        document.getElementById('salario-funcionario').value = ''
+        fetchFuncionarios()
+    })
+    .catch(error => console.error('Error adding product:', error));
+}
+

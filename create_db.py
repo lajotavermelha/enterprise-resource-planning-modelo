@@ -1,5 +1,6 @@
 from main import app, db
-from models import Produto
+from models import Produto, Funcionario
+
 
 with app.app_context():
     db.create_all()
