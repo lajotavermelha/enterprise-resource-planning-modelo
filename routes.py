@@ -1,6 +1,6 @@
 from flask import request, jsonify, render_template
 from main import app, db
-from models import Produto, Funcionario
+from models import Produto, Funcionario, Vendas
 
 
 @app.route('/')
@@ -67,3 +67,40 @@ def update_delete_funcionario(id):
         db.session.commit()
         return jsonify({'message': 'funcionario deletado'}), 200
             
+@app.route('/api/vendas', methods=['GET', 'POST'])
+def get_add_vendas():
+    if request.method == 'GET':
+        vendas = Vendas.query.all()
+        return jsonify([{'id': v.id,
+                         'funcionario': v.funcionario,
+                         'produto': v.produto,
+                         'quantidade': v.quantidade,
+                         'valor_produto': v.valor_produto,
+                         'valor_total': v.valor_total
+                         }]for v in vendas)
+    elif request.method == 'POST':
+        data = request.get_json()
+        nova_venda = Vendas(
+            funcionario = data['funcionario'],
+            produto = data['produto'],
+            quantidade = data['quantidade'],
+            valor_produto = data['valor_produto'],
+            valor_total = data['valor_total']
+        )
+        db.session.add(nova_venda)
+        db.session.commit()
+        return jsonify({'message': 'venda concliuda'}), 201
+    
+@app.route('/api/vendas/<int:id>', methods=['PUT'])
+def delete_vendas(id):
+    venda = Vendas.query.get_or_404(id)
+    if request.method == 'PUT':
+        data = request.get_json()
+        venda.data = request.get_json()
+        venda.funcionario = data['funcionario'],
+        venda.produto = data['produto'],
+        venda.quantidade = data['quantidade'],
+        venda.valor_produto = data['valor_produto'],
+        venda.valor_total = data['valor_total']
+        db.session.commit()
+        return jsonify({'message': 'venda editada'})

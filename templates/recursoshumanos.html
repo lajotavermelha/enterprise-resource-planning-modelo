@@ -1,18 +1,31 @@
+<!-- Template 2: ERP - Recursos Humanos -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP - Recursos Humanos</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
 </head>
 <body>
-    <h1>ERP - Recursos humanos</h1>
-    <div>
-        <input type="text" id="nome-funcionario" placeholder="Nome">
-        <input type="text" id="salario-funcionario" placeholder="Salario">
-        <button onclick="addFuncionario()" id="btn-add-funcionario">Adicionar funcionario</button>
-    </div>
-    <div id="funcionarios-list"></div>
+    <header>
+        <h1>ERP - Recursos Humanos</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Adicionar Funcionário</h2>
+            <form>
+                <input type="text" id="nome-funcionario" placeholder="Nome">
+                <input type="text" id="salario-funcionario" placeholder="Salario">
+                <button onclick="addFuncionario()" id="btn-add-funcionario">Adicionar Funcionário</button>
+            </form>
+        </section>
+        <section id="funcionarios-list">
+            <h2>Funcionários</h2>
+            <!-- funcionarios list will be rendered here -->
+        </section>
+    </main>
     <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
 </body>
 </html>

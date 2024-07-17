@@ -1,3 +1,5 @@
+<!-- Template 1: ERP - Produtos -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +9,24 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
 </head>
 <body>
-    <h1>ERP - Produtos</h1>
-    <div id="product-form">
-        <input type="text" id="product-name" placeholder="Nome do Produto">
-        <input type="number" id="product-quantity" placeholder="Quantidade">
-        <input type="number" id="product-value" placeholder="Valor">
-        <button onclick="addProduct()">Adicionar Produto</button>
-    </div>
-    <div id="product-list"></div>
+    <header>
+        <h1>ERP - Produtos</h1>
+    </header>
+    <main>
+        <section id="product-form">
+            <h2>Adicionar Produto</h2>
+            <form>
+                <input type="text" id="product-name" placeholder="Nome do Produto">
+                <input type="number" id="product-quantity" placeholder="Quantidade">
+                <input type="number" id="product-value" placeholder="Valor">
+                <button onclick="addProduct()">Adicionar Produto</button>
+            </form>
+        </section>
+        <section id="product-list">
+            <h2>Produtos</h2>
+            <!-- product list will be rendered here -->
+        </section>
+    </main>
     <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
 </body>
 </html>
