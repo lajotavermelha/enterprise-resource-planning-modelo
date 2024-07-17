@@ -14,6 +14,14 @@ def produtos_page():
 def recursos_humanos():
     return render_template('recursoshumanos.html')
 
+@app.route('/vendas')
+def vendas():
+    return render_template('vendas.html')
+
+@app.route('/vendedor')
+def vendedor():
+    return render_template('vendedor.html')
+
 @app.route('/api/estoque', methods=['GET', 'POST'])
 def manage_produtos():
     if request.method == 'GET':
