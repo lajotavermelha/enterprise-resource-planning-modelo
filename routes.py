@@ -75,22 +75,24 @@ def update_delete_funcionario(id):
         db.session.commit()
         return jsonify({'message': 'funcionario deletado'}), 200
             
-@app.route('/api/vendas', methods=['GET', 'POST'])
+@app.route('/api/vendedor', methods=['GET', 'POST'])
 def get_add_vendas():
     if request.method == 'GET':
         vendas = Vendas.query.all()
         return jsonify([{'id': v.id,
-                         'funcionario': v.funcionario,
-                         'produto': v.produto,
+                         'funcionario': v.funcionario.to_dict(),
+                         'funcionario_id': v.funcionario_id,
+                         'produto': v.produto.to_dict(),
+                         'produto_id': v.produto_id,
                          'quantidade': v.quantidade,
                          'valor_produto': v.valor_produto,
                          'valor_total': v.valor_total
-                         }]for v in vendas)
+                         }for v in vendas])
     elif request.method == 'POST':
         data = request.get_json()
         nova_venda = Vendas(
-            funcionario = data['funcionario'],
-            produto = data['produto'],
+            funcionario_id=data['funcionario_id'],
+            produto_id=data['produto_id'],
             quantidade = data['quantidade'],
             valor_produto = data['valor_produto'],
             valor_total = data['valor_total']
@@ -99,7 +101,7 @@ def get_add_vendas():
         db.session.commit()
         return jsonify({'message': 'venda concliuda'}), 201
     
-@app.route('/api/vendas/<int:id>', methods=['PUT'])
+@app.route('/api/vendedor/<int:id>', methods=['PUT'])
 def delete_vendas(id):
     venda = Vendas.query.get_or_404(id)
     if request.method == 'PUT':

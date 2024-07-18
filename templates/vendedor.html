@@ -23,12 +23,12 @@
             <input type="number" id="quantidade" placeholder="quantidade">
             <p id="valor_produto"></p>
             <p id="valor_total"></p>
-            <button onclick="addVenda()">Efetuar Venda</button>
+            <button onclick="addVenda()" id="add-venda-button">Efetuar Venda</button>
         </section>
         <section id="vendas-list">
             <h2>Vendas Registradas</h2>
         </section>
     </main>
-    <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
+    <script src="{{url_for('static', filename='js/vendedor.js')}}"></script>
 </body>
 </html>
