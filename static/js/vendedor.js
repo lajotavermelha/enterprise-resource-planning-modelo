@@ -9,19 +9,21 @@ function fetchVendas() {
     fetch('/api/vendedor')
     .then(response => response.json())
     .then (data => {
-        const vendasList = document.getElementById('vendas-list')
+        const vendasList = document.getElementById('vendas-body')
         vendasList.innerHTML = ''
         data.forEach(venda => {
-            const vendaItem = document.createElement('div')
-            vendaItem.className = 'venda-item'
-            vendaItem.innerHTML = `
-                <span>${venda.id} ${venda.funcionario} ${venda.produto} ${venda.quantidade} ${venda.valor_produto} ${venda.valor_total}</span>
-                <div>
-                    <button onclick="editFuncionario(${venda.id})">Editar</button>
-                    <button onclick="deleteFuncionario(${venda.id})">Excluir</button>
-                </div>
+            const row = document.createElement('tr')
+            row.className = 'venda-item'
+            row.innerHTML = `
+                <td>${venda.id}</td>
+                <td>${venda.funcionario.nome}</td>
+                <td>${venda.produto.nome}</td>
+                <td>${venda.quantidade}</td>
+                <td>R$ ${venda.valor_produto.toFixed(2)}</td>
+                <td>R$ ${venda.valor_total.toFixed(2)}</td>
+
             `
-            vendasList.appendChild(vendaItem)
+            vendasList.appendChild(row)
         })
         
     })
@@ -43,36 +45,36 @@ function fetchVendedor() {
     })
     .catch(error => console.error('Error fetching products:', error));
 }
-
 function fetchProduto() {
     fetch('/api/estoque')
     .then(response => response.json())
     .then(data => {
-        const produtoList = document.getElementById('produto-list')
-        produtoList.innerHTML = ''
+        const produtoList = document.getElementById('produto-list');
+        produtoList.innerHTML = '';
         data.forEach(produto => {
-            const produtoOption = document.createElement('option')
-            produtoOption.value = produto.id
-            produtoOption.text = produto.nome
-            produtoList.appendChild(produtoOption)
+            const produtoOption = document.createElement('option');
+            produtoOption.value = produto.id;
+            produtoOption.text = produto.nome;
+            produtoList.appendChild(produtoOption);
+        });
+        const calculateTotal = () => {
+            const selectedProdutoId = produtoList.value;
+            const selectedProduto = data.find(p => p.id == selectedProdutoId);
 
+            if (selectedProduto) {
+                const produtoValue = parseFloat(selectedProduto.valor);
+                const quantidade = parseInt(document.getElementById('quantidade').value) || 0;
+                const valor_produto = document.getElementById('valor_produto');
+                const valor_total = document.getElementById('valor_total');
+
+                valor_produto.textContent = `R$ ${produtoValue.toFixed(2)}`;
+                valor_total.textContent = `R$ ${(produtoValue * quantidade).toFixed(2)}`;
+            }
+        };
+        produtoList.addEventListener('change', calculateTotal);
+        document.getElementById('quantidade').addEventListener('input', calculateTotal);
     })
-    produtoList.addEventListener('change', (e) => {
-        const selectedProdutoId = e.target.value;
-        const selectedProduto = data.find(p => p.id == selectedProdutoId);
-    
-        if (selectedProduto) {
-            const produtoValue = parseInt(selectedProduto.valor);
-            const quantidade = parseInt(document.getElementById('quantidade').value);
-            const valor_produto = document.getElementById('valor_produto');
-            const valor_total = document.getElementById('valor_total');
-    
-            valor_produto.textContent = `R$ ${produtoValue.toFixed(2)}`;
-            valor_total.textContent = `R$ ${(produtoValue * quantidade).toFixed(2)}`;
-        }
-    });
-})
-.catch(error => console.error('Error fetching products:', error))
+    .catch(error => console.error('Error fetching products:', error));
 }
 
 function addVenda() {
@@ -80,9 +82,9 @@ function addVenda() {
     const produto_id = parseInt(document.getElementById('produto-list').value)
     const quantidade= parseInt(document.getElementById('quantidade').value);
     const valorProdutoStr = document.getElementById('valor_produto').textContent;
-    const valorTotalStr = document.getElementById('valor_produto').textContent;
+    const valorTotalStr = document.getElementById('valor_total').textContent;
     const valorProduto = parseInt(valorProdutoStr.replace('R$ ', '').trim());
-    const valorTotal = parseInt(valorTotalStr.replace('R$', ' ').trim())
+    const valorTotal = parseInt(valorTotalStr.replace('R$', '').trim())
     fetch('/api/vendedor', {
         method: 'POST',
         headers: {
@@ -122,3 +124,13 @@ function editVenda(id) {
     .catch(error => console.error('Error updating venda:', error))
 }
 
+document.getElementById('logout-button').addEventListener('click', logout)
+
+function logout(){
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => response.redirected)
+    .then(() => window.location.href ='/login');
+}

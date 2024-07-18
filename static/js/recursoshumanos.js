@@ -31,13 +31,14 @@ function fetchFuncionarios() {
 function addFuncionario() {
     const nome_funcionario = document.getElementById('nome-funcionario').value
     const salario_funcionario = document.getElementById('salario-funcionario').value
+    const senha_funcionario = document.getElementById('senha-funcionario').value
 
     fetch('/api/recursoshumanos',  {
         method:'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({nome: nome_funcionario, salario: salario_funcionario})
+        body: JSON.stringify({nome: nome_funcionario, salario: salario_funcionario, password: senha_funcionario})
     })
     .then(response => response.json())
     .then(() => {

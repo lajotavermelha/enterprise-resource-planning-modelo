@@ -1,4 +1,6 @@
-from main import db
+from db import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Produto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,10 +23,12 @@ class Vendas(db.Model):
     valor_total = db.Column(db.Integer, nullable=False)
 
 
-class Funcionario(db.Model):
+class Funcionario(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     salario = db.Column(db.Integer, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     def to_dict(self):
         return {'id': self.id, 'nome': self.nome}

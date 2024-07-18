@@ -4,23 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
-    <title>ERP - Vendedor</title>
+    <title>ERP - Vendas</title>
 </head>
 <body>
     <header>
-        <h1>ERP - Vendedor</h1>
-        <button id="logout-button" onclick="logout()">Logout</button>
+        <h1>ERP - Vendas</h1>
     </header>
     <main>
-        <section>
-            <h2>Adicionar Venda</h2>
-            <select id="vendedor-list"></select>
-            <select id="produto-list"></select>
-            <input type="number" id="quantidade" placeholder="Quantidade">
-            <p id="valor_produto"></p>
-            <p id="valor_total"></p>
-            <button onclick="addVenda()" id="add-venda-button">Efetuar Venda</button>
-        </section>
         <section id="vendas-list">
             <h2>Vendas Registradas</h2>
             <table>
@@ -32,6 +22,7 @@
                         <th>Quantidade</th>
                         <th>Valor Produto</th>
                         <th>Valor Total</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="vendas-body">
@@ -40,6 +31,6 @@
             </table>
         </section>
     </main>
-    <script src="{{url_for('static', filename='js/vendedor.js')}}"></script>
+    <script src="{{url_for('static', filename='js/vendas.js')}}"></script>
 </body>
 </html>
