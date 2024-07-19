@@ -54,7 +54,7 @@ function fetchProduto() {
         data.forEach(produto => {
             const produtoOption = document.createElement('option');
             produtoOption.value = produto.id;
-            produtoOption.text = produto.nome;
+            produtoOption.text = `${produto.nome} (${produto.quantidade})`;
             produtoList.appendChild(produtoOption);
         });
         const calculateTotal = () => {
@@ -98,12 +98,14 @@ function addVenda() {
             valor_total: valorTotal
         })
     })
+    
     .then(response => response.json())
     .then(() => {
         document.getElementById('quantidade').value = '';
         document.getElementById('valor_produto').value = '';
         document.getElementById('valor_total').value = '';
         fetchVendas();
+        fetchProduto()
     })
     .catch(error => console.error('Error adding venda:', error));
     }

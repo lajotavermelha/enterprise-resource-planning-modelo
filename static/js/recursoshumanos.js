@@ -17,7 +17,7 @@ function fetchFuncionarios() {
             const funcionariosItem = document.createElement('div')
             funcionariosItem.className = 'funcionario-item'
             funcionariosItem.innerHTML = `
-                <span>${funcionario.nome} R$${funcionario.salario}</span>
+                <span>${funcionario.nome} R$${funcionario.salario} </span>
                 <div>
                     <button onclick="editFuncionario(${funcionario.id})">Editar</button>
                     <button onclick="deleteFuncionario(${funcionario.id})">Excluir</button>
@@ -32,18 +32,21 @@ function addFuncionario() {
     const nome_funcionario = document.getElementById('nome-funcionario').value
     const salario_funcionario = document.getElementById('salario-funcionario').value
     const senha_funcionario = document.getElementById('senha-funcionario').value
+    const is_admin = document.getElementById('is-admin').checked
 
     fetch('/api/recursoshumanos',  {
         method:'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({nome: nome_funcionario, salario: salario_funcionario, password: senha_funcionario})
+        body: JSON.stringify({nome: nome_funcionario, salario: salario_funcionario, senha: senha_funcionario, is_admin: is_admin})
     })
     .then(response => response.json())
     .then(() => {
         document.getElementById('nome-funcionario').value = ''
         document.getElementById('salario-funcionario').value = ''
+        document.getElementById('senha-funcionario').value = ''
+        document.getElementById('is-admin').checked = false
         fetchFuncionarios()
     })
     .catch(error => console.error('Error adding product:', error));
