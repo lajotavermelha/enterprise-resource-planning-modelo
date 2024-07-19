@@ -8,7 +8,12 @@
 </head>
 <body>
     <header>
-        <h1>ERP - Vendas</h1>
+        <div>
+            <h1>ERP - Vendas</h1>
+        </div>
+        <div id="div-logout">
+            <button id="logout-button" onclick="logout()">Logout</button>
+        </div>
     </header>
     <main>
         <section id="vendas-list">
@@ -31,6 +36,6 @@
             </table>
         </section>
     </main>
-    <script src="{{url_for('static', filename='js/vendas.js')}}"></script>
+    <script src="{{url_for('static', filename='js/admin.js')}}"></script>
 </body>
 </html>

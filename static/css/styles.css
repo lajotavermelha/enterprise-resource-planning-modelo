@@ -6,84 +6,67 @@ body {
   background: #2e2e2e;
   color: #f2f2f2;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-h1, h2 {
+header {
+  background: #3e3e3e;
+  padding: 20px;
   color: #f2f2f2;
 }
 
-/* Login form styles */
-.login-container {
-  max-width: 400px;
-  width: 100%;
-  padding: 40px;
-  background-color: #3e3e3e;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
+header h1 {
+  margin: 0;
 }
 
-.login-container .avatar {
+nav ul {
+  list-style: none;
+  padding: 0;
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  gap: 15px;
 }
 
-.login-container .avatar img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
+nav ul li {
+  display: inline;
 }
 
-.login-container input[type="email"],
-.login-container input[type="password"] {
-  width: calc(100% - 22px);
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background: #f2f2f2;
-  color: #333;
-}
-
-.login-container button {
-  padding: 10px 20px;
-  background-image: linear-gradient(10deg, #bf9aff, #fad0c4);
-  color: #373737;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.login-container .remember-me {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.login-container .remember-me label {
+nav ul li a {
   color: #f2f2f2;
-}
-
-.login-container .remember-me input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.login-container a {
-  color: #bf9aff;
   text-decoration: none;
+  padding: 10px;
 }
 
-.login-container a:hover {
-  text-decoration: underline;
+nav ul li a:hover {
+  background: #5e5e5e;
+  border-radius: 5px;
 }
 
-/* Form styles for other pages */
+main {
+  flex: 1;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #3e3e3e;
+  border-radius: 10px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+footer {
+  background: #3e3e3e;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 10px;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* Form and button styles */
 input, select {
   padding: 10px;
   margin-bottom: 10px;
@@ -100,19 +83,10 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  
 }
 
-#div-logout {
-  display: flex;
-  align-items: center;
-  margin: 15px;
-}
-
-header {
-  display: flex;
-  margin-right: 5%;
-  padding: 10%;
+button:hover {
+  background-image: linear-gradient(10deg, #7d4c9d, #323232);
 }
 
 /* Table styles */
@@ -149,64 +123,19 @@ td button:hover {
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  .login-container {
-    padding: 20px;
+  header, footer {
+    padding: 10px;
   }
 
-  th, td {
-    padding: 5px;
+  nav ul {
+    flex-direction: column;
   }
 
-  td button {
-    padding: 5px;
+  nav ul li {
+    margin-bottom: 10px;
   }
-}
 
-/* Added styles for ERP - Recursos Humanos page */
-main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-section {
-  margin-bottom: 20px;
-}
-
-h2 {
-  margin-top: 0;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-input[type="text"], input[type="password"] {
-  width: 100%; /* changed from 100% to 90% to add some padding */
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  box-sizing: border-box; /* added to include padding in width calculation */
-}
-
-input[type="checkbox"] {
-  margin-right: 10px; /* added to align checkbox with text */
-}
-
-label {
-  display: inline-block; /* added to align checkbox with text */
-  margin-right: 10px;
-}
-
-button {
-  margin: 5px 2px;
-  padding: 10px 20px;
-  background-image: linear-gradient(10deg, #9456fd, #424242);
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  button {
+    padding: 8px 16px;
+  }
 }

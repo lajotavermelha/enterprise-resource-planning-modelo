@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname === '/vendedor') {
+    if (window.location.pathname === '/admin') {
         fetchVendas()
     }
 })
 
 function fetchVendas() {
-    fetch('/api/vendedor')
+    fetch('/api/admin')
     .then(response => response.json())
     .then (data => {
         console.log(data)
@@ -28,4 +28,12 @@ function fetchVendas() {
         
     })
     .catch(error => console.error('Error fetching vendas:', error))
+}
+function logout(){
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => response.redirected)
+    .then(() => window.location.href ='/login');
 }

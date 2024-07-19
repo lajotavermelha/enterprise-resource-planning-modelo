@@ -1,4 +1,4 @@
-from flask import request, jsonify, render_template, redirect, url_for, flash
+from flask import request, jsonify, render_template, redirect, url_for, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from main import app, db
@@ -12,7 +12,10 @@ def login():
         user = Funcionario.query.filter_by(nome=nome).first()
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            return redirect(url_for('vendedor'))
+            if user.is_admin:
+                return redirect(url_for('admin'))
+            else:
+                return redirect(url_for('vendedor'))
         else:
             flash('Usuário ou senha inválidos')
     return render_template('login.html')
@@ -21,35 +24,41 @@ def login():
 @login_required
 def logout():
     logout_user()
-    session.clear()
+    session.clear()  # Limpa a sessão
+    flash('Você foi desconectado.')
     return redirect(url_for('login'))
 
 @app.route('/admin')
 @login_required
 def admin():
     if not current_user.is_admin:
-        return redirect(url_for('vendedor'))
+        flash('Acesso negado. Você não tem permissão para acessar esta página.')
+        logout_user()
+        session.clear()
+        return redirect(url_for('login'))
     return render_template('admin.html')
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/estoque')
-def produtos_page():
-    return render_template('produtos.html')
-@app.route('/recursoshumanos')
-def recursos_humanos():
-    return render_template('recursoshumanos.html')
-
-@app.route('/vendas')
-def vendas():
-    return render_template('vendas.html')
 
 @app.route('/vendedor')
 @login_required
 def vendedor():
+    if current_user.is_admin:
+        flash('Acesso negado. Você não tem permissão para acessar esta página.')
+        logout_user()
+        session.clear()
+        return redirect(url_for('login'))
     return render_template('vendedor.html', user=current_user)
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/estoque')
+def produtos_page():
+    return render_template('produtos.html')
+
+@app.route('/recursoshumanos')
+def recursos_humanos():
+    return render_template('recursoshumanos.html')
 
 @app.route('/api/estoque', methods=['GET', 'POST'])
 def manage_produtos():
@@ -77,7 +86,6 @@ def update_delete_produto(id):
         db.session.delete(produto)
         db.session.commit()
         return jsonify({'message': 'Produto excluído'}), 200
-
 
 @app.route('/api/recursoshumanos', methods=['GET', 'POST'])
 def manage_funcionarios():
@@ -152,3 +160,16 @@ def update_vendas(id):
         venda.valor_total = data['valor_total']
         db.session.commit()
         return jsonify({'message': 'venda editada'})
+    
+@app.route('/api/admin', methods=['GET'])
+def admin_show():
+    vendas = Vendas.query.all()
+    return jsonify([{'id': v.id,
+                        'funcionario': v.funcionario.to_dict(),
+                        'funcionario_id': v.funcionario_id,
+                        'produto': v.produto.to_dict(),
+                        'produto_id': v.produto_id,
+                        'quantidade': v.quantidade,
+                        'valor_produto': v.valor_produto,
+                        'valor_total': v.valor_total
+                        }for v in vendas])
