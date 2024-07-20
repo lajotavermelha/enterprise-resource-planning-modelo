@@ -20,6 +20,11 @@ header h1 {
   margin: 0;
 }
 
+header h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
 nav ul {
   list-style: none;
   padding: 0;
@@ -32,13 +37,13 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #f2f2f2;
+  color: #9d9d9d;
   text-decoration: none;
   padding: 10px;
 }
 
 nav ul li a:hover {
-  background: #5e5e5e;
+  background: #606060;
   border-radius: 5px;
 }
 
@@ -124,18 +129,85 @@ td button:hover {
 /* Responsive styles */
 @media (max-width: 768px) {
   header, footer {
-    padding: 10px;
+      padding: 10px;
   }
 
   nav ul {
-    flex-direction: column;
+      flex-direction: column;
   }
 
   nav ul li {
-    margin-bottom: 10px;
+      
+      margin-bottom: 10px;
   }
 
   button {
-    padding: 8px 16px;
+      padding: 8px 16px;
   }
+}
+
+/* Login container styles */
+.login-container {
+  background: #3e3e3e;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.avatar {
+  margin-bottom: 20px;
+}
+
+.avatar img {
+  width: 100px;
+  border-radius: 50%;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  padding-left: 10px;
+  font-size: 50px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  background-image: linear-gradient(10deg, #9456fd, #424242);
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-image: linear-gradient(10deg, #7d4c9d, #323232);
+}
+
+#logout-button {
+  width: 10%;
+  background-image: linear-gradient(10deg, #272727, #424242);
 }
